@@ -14,16 +14,17 @@ import org.openqa.selenium.chrome.ChromeDriver;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ContaTesteWeb {
 	private ChromeDriver driver;
-	String nomeConta = "Conta estratégia #1";
-	String nomeContaAlterada = "Conta estratégia #1 Alterada";
-	String msgSucesso = "Conta adicionada com sucesso!";
-	String msgAlterada = "Conta alterada com sucesso!";
-	String msgRemovida = "Conta removida com sucesso!";
+	private String nomeConta = "Conta estratégia #1";
+	private String nomeContaAlterada = "Conta estratégia #1 Alterada";
+	private String msgSucesso = "Conta adicionada com sucesso!";
+	private String msgAlterada = "Conta alterada com sucesso!";
+	private String msgRemovida = "Conta removida com sucesso!";
 
 	@Before
 	public void login() {
 		driver = new ChromeDriver();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
 		driver.get("http://seubarriga.wcaquino.me/");
 		driver.findElement(By.id("email")).sendKeys("exemplo@gmail.com");
 		driver.findElement(By.id("senha")).sendKeys("arthur@046");
