@@ -52,14 +52,13 @@ public class GeradorMassas {
 
 	public static void main(String[] args) throws Exception {
 
-		GeradorMassas gerador = new GeradorMassas();
-		for (int i = 0; i < 10; i++) {
-			gerador.gerarConta();
-		}
-
 		/*
-		 * String massa = new MassaDAOImpl().obterMassa(CHAVE_CONTA_SB);
-		 * System.out.println(massa);
+		 * GeradorMassas gerador = new GeradorMassas(); for (int i = 0; i < 10; i++) {
+		 * gerador.gerarConta(); }
 		 */
+
+		  String massa = new MassaDAOImpl().obterMassa(CHAVE_CONTA_SB);
+		  System.out.println(massa);
+		 
 	}
 }
