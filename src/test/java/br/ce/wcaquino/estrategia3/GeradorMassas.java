@@ -31,11 +31,13 @@ public class GeradorMassas {
 		new MassaDAOImpl().inserirMassa(CHAVE_CONTA_SB, registro);
 	}
 	public static void main(String[]args) throws ClassNotFoundException, SQLException {
+		
+		  GeradorMassas gerador = new GeradorMassas(); for (int i = 0; i < 5; i++) {
+		  gerador.gerarContaSeuBarriga(); }
+		 
 		/*
-		 * GeradorMassas gerador = new GeradorMassas(); for (int i = 0; i < 5; i++) {
-		 * gerador.gerarContaSeuBarriga(); }
+		 * String massa = new MassaDAOImpl().obterMassa(CHAVE_CONTA_SB);
+		 * System.out.println(massa);
 		 */
-		String massa = new MassaDAOImpl().obterMassa(CHAVE_CONTA_SB);
-		System.out.println(massa);
 	}
 }
