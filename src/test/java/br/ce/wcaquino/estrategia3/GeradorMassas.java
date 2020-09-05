@@ -18,7 +18,7 @@ public class GeradorMassas {
 	public static final String CHAVE_CONTA = "CONTA";
 
 	public void gerarContaSeuBarriga() throws ClassNotFoundException, SQLException {
-		System.setProperty("webdriver.chrome.driver", "C:\\webDrivers\\chromedriver.exe");
+//		System.setProperty("webdriver.chrome.driver", "C:\\webDrivers\\chromedriver.exe");
 		ChromeDriver driver = new ChromeDriver();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
@@ -52,13 +52,17 @@ public class GeradorMassas {
 
 	public static void main(String[] args) throws Exception {
 
-		/*
-		 * GeradorMassas gerador = new GeradorMassas(); for (int i = 0; i < 10; i++) {
-		 * gerador.gerarConta(); }
-		 */
+		
+		GeradorMassas gerador = new GeradorMassas();
+		for (int i = 0; i < 10; i++) {
+			gerador.gerarConta();
+		}
+		 
 
-		  String massa = new MassaDAOImpl().obterMassa(CHAVE_CONTA_SB);
-		  System.out.println(massa);
+		/*
+		 * String massa = new MassaDAOImpl().obterMassa(CHAVE_CONTA_SB);
+		 * System.out.println(massa);
+		 */
 		 
 	}
 }

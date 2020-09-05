@@ -11,7 +11,7 @@ import br.ce.wcaquino.entidades.Conta;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.service.ContaService;
 import br.ce.wcaquino.service.UsuarioService;
-
+//estrategia 2
 public class ContaServiceTest {
 
 	private static Faker faker = new Faker();

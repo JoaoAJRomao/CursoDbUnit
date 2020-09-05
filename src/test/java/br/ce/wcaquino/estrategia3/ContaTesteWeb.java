@@ -24,7 +24,7 @@ public class ContaTesteWeb {
 
 	@Before
 	public void login() {
-		System.setProperty("webdriver.chrome.driver", "C:\\webDrivers\\chromedriver.exe");
+//		System.setProperty("webdriver.chrome.driver", "C:\\webDrivers\\chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.manage().window().maximize();

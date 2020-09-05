@@ -12,6 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.github.javafaker.Faker;
 
+// estrategia 2
 public class ContaTesteWeb {
 	private ChromeDriver driver;
 	private Faker faker = new Faker();
