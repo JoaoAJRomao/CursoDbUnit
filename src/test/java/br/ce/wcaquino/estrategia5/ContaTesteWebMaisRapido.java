@@ -9,7 +9,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
-// Estratégia 2
 
 //estrategia 5
 public class ContaTesteWebMaisRapido {
