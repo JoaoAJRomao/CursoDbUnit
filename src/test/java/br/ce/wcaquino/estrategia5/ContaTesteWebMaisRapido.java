@@ -3,16 +3,17 @@ package br.ce.wcaquino.estrategia5;
 import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
+// Estratégia 2
+
 //estrategia 5
-public class ContaTesteWeb {
-	private ChromeDriver driver;
+public class ContaTesteWebMaisRapido {
+	private static ChromeDriver driver;
 	private String nomeContaAlterada = " Alterada";
 	private String msgSucesso = "Conta adicionada com sucesso!";
 	private String msgAlterada = "Conta alterada com sucesso!";
@@ -20,20 +21,6 @@ public class ContaTesteWeb {
 
 	@BeforeClass
 	public static void reset() {
-		ChromeDriver driverLogin = new ChromeDriver();
-		driverLogin.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		driverLogin.manage().window().maximize();
-		driverLogin.get("http://seubarriga.wcaquino.me/");
-		driverLogin.findElement(By.id("email")).sendKeys("exemplo@gmail.com");
-		driverLogin.findElement(By.id("senha")).sendKeys("arthur@046");
-		driverLogin.findElement(By.tagName("button")).click();
-		driverLogin.findElement(By.linkText("reset")).click();
-		driverLogin.quit();
-	}
-
-	@Before
-	public void login() {
-//		System.setProperty("webdriver.chrome.driver", "C:\\webDrivers\\chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
@@ -41,6 +28,7 @@ public class ContaTesteWeb {
 		driver.findElement(By.id("email")).sendKeys("exemplo@gmail.com");
 		driver.findElement(By.id("senha")).sendKeys("arthur@046");
 		driver.findElement(By.tagName("button")).click();
+		driver.findElement(By.linkText("reset")).click();
 	}
 
 	@Test
@@ -82,8 +70,8 @@ public class ContaTesteWeb {
 		Assert.assertEquals(msgRemovida, msg);
 	}
 
-	@After
-	public void fechar() {
+	@AfterClass
+	public static void fechar() {
 		driver.quit();
 	}
 }
