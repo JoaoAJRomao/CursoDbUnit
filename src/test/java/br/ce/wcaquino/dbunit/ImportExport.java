@@ -21,18 +21,18 @@ import br.ce.wcaquino.dao.utils.ConnectionFactory;
 public class ImportExport {
 	public static void main(String[] args) throws Exception {
 //		exportarBanco();
-		importarBanco();
+		importarBanco("saida.xml");
 	}
 
-	private static void importarBanco() throws DatabaseUnitException, SQLException, ClassNotFoundException,
+	public static void importarBanco(String massa) throws DatabaseUnitException, SQLException, ClassNotFoundException,
 			DataSetException, FileNotFoundException {
 		DatabaseConnection dbConn = new DatabaseConnection(ConnectionFactory.getConnection());
 		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-		IDataSet dataSet = builder.build(new FileInputStream("massas" + File.separator + "saidaFiltrada.xml"));
+		IDataSet dataSet = builder.build(new FileInputStream("massas" + File.separator + massa));
 		DatabaseOperation.CLEAN_INSERT.execute(dbConn, dataSet);
 	}
 
-	private static void exportarBanco() throws Exception {
+	public static void exportarBanco() throws Exception {
 		DatabaseConnection dbConn = new DatabaseConnection(ConnectionFactory.getConnection());
 		IDataSet dataSet = dbConn.createDataSet();
 		DatabaseSequenceFilter databaseSequenceFilter = new DatabaseSequenceFilter(dbConn);
