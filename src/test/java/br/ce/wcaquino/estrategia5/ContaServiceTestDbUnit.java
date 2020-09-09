@@ -9,6 +9,8 @@ import org.dbunit.assertion.DiffCollectingFailureHandler;
 import org.dbunit.assertion.Difference;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.Assert;
@@ -42,6 +44,29 @@ public class ContaServiceTestDbUnit {
 		userService.printAll();
 		service.printAll();
 
+	}
+	
+	@Test
+	public void testInserir_Filter() throws Exception {
+		ImportExport.importarBanco("estrategia4_inserirConta.xml");
+		Usuario usuario = userService.findById(1L);
+		Conta conta = new Conta("Conta salva", usuario);
+		service.salvar(conta);
+		
+		//coleta o estado atual do banco
+		DatabaseConnection dbConn = new DatabaseConnection(ConnectionFactory.getConnection());
+		IDataSet estadoFinalBanco = dbConn.createDataSet();
+		//coleto o estado esperado - é o XML que vamos passar
+		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+		FlatXmlDataSet dataSetEsperado = builder.build(new FileInputStream("massas"+File.separator+"estrategia4_inserirConta_saida.xml"));
+		//por ultimo: comparar esses 2
+//		Assertion.assertEquals(dataSetEsperado, estadoFinalBanco);
+		ITable contasAtualFiltradas = DefaultColumnFilter.excludedColumnsTable(estadoFinalBanco.getTable("contas"), new String[] {"id"});
+		ITable contasEsperadoFiltradas = DefaultColumnFilter.excludedColumnsTable(dataSetEsperado.getTable("contas"), new String[] {"id"});
+		Assertion.assertEquals(contasEsperadoFiltradas, contasAtualFiltradas);
+		ITable usuarioAtualFiltradas = DefaultColumnFilter.excludedColumnsTable(estadoFinalBanco.getTable("usuarios"), new String[] {"conta_principal_id"});
+		ITable usuarioEsperadoFiltradas = DefaultColumnFilter.excludedColumnsTable(dataSetEsperado.getTable("usuarios"), new String[] {"conta_principal_id"});
+		Assertion.assertEquals(usuarioEsperadoFiltradas, usuarioAtualFiltradas);
 	}
 
 	@Test
