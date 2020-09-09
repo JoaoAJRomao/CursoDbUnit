@@ -2,8 +2,11 @@ package br.ce.wcaquino.estrategia5;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
 
 import org.dbunit.Assertion;
+import org.dbunit.assertion.DiffCollectingFailureHandler;
+import org.dbunit.assertion.Difference;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -55,7 +58,29 @@ public class ContaServiceTestDbUnit {
 		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
 		FlatXmlDataSet dataSetEsperado = builder.build(new FileInputStream("massas"+File.separator+"estrategia4_inserirConta_saida.xml"));
 		//por ultimo: comparar esses 2
-		Assertion.assertEquals(dataSetEsperado, estadoFinalBanco);
+//		Assertion.assertEquals(dataSetEsperado, estadoFinalBanco);
+		DiffCollectingFailureHandler handler = new DiffCollectingFailureHandler();
+		Assertion.assertEquals(dataSetEsperado, estadoFinalBanco, handler);
+		List<Difference> erros = handler.getDiffList();
+		boolean erroReal = false;
+		for(Difference erro: erros) {
+			System.out.println(erro.toString());
+			if (erro.getActualTable().getTableMetaData().getTableName().equals("contas")) {
+				if (erro.getColumnName().equals("id")) {
+					if (erro.getActualValue().toString().equals(contaSalva.getId().toString())) {
+						continue;
+					} else {
+						System.out.printf("ID errado! Id %s é diferente de Id %s",erro.getActualValue().toString(),contaSalva.getId().toString());
+						erroReal = true;
+					}
+				} else {
+					erroReal = true;
+				}
+			} else {
+				erroReal = true;
+			}
+		}
+		Assert.assertFalse(erroReal);
 	}
 
 	@Test
