@@ -1,9 +1,18 @@
 package br.ce.wcaquino.estrategia5;
 
+import java.io.File;
+import java.io.FileInputStream;
+
+import org.dbunit.Assertion;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.ce.wcaquino.dao.utils.ConnectionFactory;
 import br.ce.wcaquino.dbunit.ImportExport;
 import br.ce.wcaquino.entidades.Conta;
 import br.ce.wcaquino.entidades.Usuario;
@@ -30,6 +39,23 @@ public class ContaServiceTestDbUnit {
 		userService.printAll();
 		service.printAll();
 
+	}
+
+	@Test
+	public void testInserir_Assertion() throws Exception {
+		ImportExport.importarBanco("estrategia4_inserirConta.xml");
+		Usuario usuario = userService.findById(1L);
+		Conta conta = new Conta("Conta salva", usuario);
+		Conta contaSalva = service.salvar(conta);
+		
+		//coleta o estado atual do banco
+		DatabaseConnection dbConn = new DatabaseConnection(ConnectionFactory.getConnection());
+		IDataSet estadoFinalBanco = dbConn.createDataSet();
+		//coleto o estado esperado - é o XML que vamos passar
+		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+		FlatXmlDataSet dataSetEsperado = builder.build(new FileInputStream("massas"+File.separator+"estrategia4_inserirConta_saida.xml"));
+		//por ultimo: comparar esses 2
+		Assertion.assertEquals(dataSetEsperado, estadoFinalBanco);
 	}
 
 	@Test
