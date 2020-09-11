@@ -1,6 +1,5 @@
 package br.ce.wcaquino.estrategia2;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Assert;
@@ -15,6 +14,7 @@ import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.service.ContaService;
 import br.ce.wcaquino.service.TransacaoService;
 import br.ce.wcaquino.service.UsuarioService;
+import br.ce.wcaquino.utils.DataUtils;
 
 public class CalculoSaldoTeste {
 	// 1 usuario
@@ -61,10 +61,10 @@ public class CalculoSaldoTeste {
 		transacaoService.salvar(new Transacao("Transação pendente", "Envolvido", TipoTransacao.RECEITA, new Date(), 16d, false, conta, usuario));
 
 		// transacao passada / saldo= 34
-		transacaoService.salvar(new Transacao("Transação passada", "Envolvido", TipoTransacao.RECEITA, obterDataComDiferencaDias(-1), 32d, true, conta, usuario));
+		transacaoService.salvar(new Transacao("Transação passada", "Envolvido", TipoTransacao.RECEITA, DataUtils.obterDataComDiferencaDias(-1), 32d, true, conta, usuario));
 
 		// transacao futura / saldo = 34
-		transacaoService.salvar(new Transacao("Transação futura", "Envolvido", TipoTransacao.RECEITA, obterDataComDiferencaDias(1), 64d, true, conta, usuario));
+		transacaoService.salvar(new Transacao("Transação futura", "Envolvido", TipoTransacao.RECEITA, DataUtils.obterDataComDiferencaDias(1), 64d, true, conta, usuario));
 
 		// transacao despesa / saldo = -94
 		transacaoService.salvar(new Transacao("Transação despesa", "Envolvido", TipoTransacao.DESPESA, new Date(), 128d, true, conta, usuario));
@@ -76,11 +76,5 @@ public class CalculoSaldoTeste {
 		Assert.assertEquals(new Double(162d), saldoDAO.getSaldoConta(conta.getId()));
 		Assert.assertEquals(new Double(8d), saldoDAO.getSaldoConta(contaSecundaria.getId()));
 		Assert.assertEquals(new Double(4d), saldoDAO.getSaldoConta(contaUsuarioAlternativo.getId()));
-	}
-
-	public Date obterDataComDiferencaDias(int dias) {
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_MONTH, dias);
-		return cal.getTime();
 	}
 }
