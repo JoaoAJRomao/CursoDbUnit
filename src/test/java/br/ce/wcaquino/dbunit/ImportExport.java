@@ -37,6 +37,24 @@ public class ImportExport {
 		desabiliarriggers(tabelas);
 		DatabaseOperation.CLEAN_INSERT.execute(dbConn, dataSet);
 		habilitarTriggers(tabelas);
+		atualizarSequences(tabelas);
+	}
+
+	private static void atualizarSequences(List<String> tabelas) throws ClassNotFoundException, SQLException {
+		for (String tabela : tabelas) {
+			Statement stmt = ConnectionFactory.getConnection().createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) FROM public." + tabela);
+			rs.next();
+			Long id = rs.getLong(1);
+			rs.close();
+			stmt.close();
+			if (id > 0) {
+				stmt = ConnectionFactory.getConnection().createStatement();
+				System.out.println(tabela + " > " + (id + 1));
+				stmt.executeUpdate("ALTER SEQUENCE " + tabela + "_id_seq RESTART WITH " + (id + 1));
+				stmt.close();
+			}
+		}
 	}
 
 	private static void habilitarTriggers(List<String> tabelas) throws ClassNotFoundException, SQLException {
